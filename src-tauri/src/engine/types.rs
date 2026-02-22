@@ -112,6 +112,14 @@ pub enum DocumentFormat {
     Png,
     Jpg,
     Pdf,
+    Txt,
+    Docx,
+    Odt,
+    Xlsx,
+    Ods,
+    Csv,
+    Pptx,
+    Odp,
 }
 
 impl DocumentFormat {
@@ -119,6 +127,14 @@ impl DocumentFormat {
     pub fn from_extension(ext: &str) -> Option<Self> {
         match ext.to_lowercase().as_str() {
             "pdf" => Some(Self::Pdf),
+            "txt" => Some(Self::Txt),
+            "docx" => Some(Self::Docx),
+            "odt" => Some(Self::Odt),
+            "xlsx" => Some(Self::Xlsx),
+            "ods" => Some(Self::Ods),
+            "csv" => Some(Self::Csv),
+            "pptx" => Some(Self::Pptx),
+            "odp" => Some(Self::Odp),
             _ => None,
         }
     }
@@ -128,11 +144,31 @@ impl DocumentFormat {
             Self::Png => "png",
             Self::Jpg => "jpg",
             Self::Pdf => "pdf",
+            Self::Txt => "txt",
+            Self::Docx => "docx",
+            Self::Odt => "odt",
+            Self::Xlsx => "xlsx",
+            Self::Ods => "ods",
+            Self::Csv => "csv",
+            Self::Pptx => "pptx",
+            Self::Odp => "odp",
         }
     }
 
-    pub fn output_formats() -> Vec<Self> {
+    pub fn pdf_output_formats() -> Vec<Self> {
         vec![Self::Png, Self::Jpg]
+    }
+
+    pub fn textdoc_output_formats() -> Vec<Self> {
+        vec![Self::Txt, Self::Pdf, Self::Docx, Self::Odt]
+    }
+
+    pub fn spreadsheet_output_formats() -> Vec<Self> {
+        vec![Self::Csv, Self::Xlsx, Self::Ods]
+    }
+
+    pub fn presentation_output_formats() -> Vec<Self> {
+        vec![Self::Pdf, Self::Pptx, Self::Odp]
     }
 
     pub fn supports_quality(&self) -> bool {
@@ -153,6 +189,14 @@ impl OutputFormat {
             "wav" => Some(Self::Audio(AudioFormat::Wav)),
             "flac" => Some(Self::Audio(AudioFormat::Flac)),
             "pdf" => Some(Self::Document(DocumentFormat::Pdf)),
+            "txt" => Some(Self::Document(DocumentFormat::Txt)),
+            "docx" => Some(Self::Document(DocumentFormat::Docx)),
+            "odt" => Some(Self::Document(DocumentFormat::Odt)),
+            "xlsx" => Some(Self::Document(DocumentFormat::Xlsx)),
+            "ods" => Some(Self::Document(DocumentFormat::Ods)),
+            "csv" => Some(Self::Document(DocumentFormat::Csv)),
+            "pptx" => Some(Self::Document(DocumentFormat::Pptx)),
+            "odp" => Some(Self::Document(DocumentFormat::Odp)),
             other => ImageFormat::from_extension(other).map(Self::Image),
         }
     }
@@ -195,6 +239,9 @@ pub fn file_category(ext: &str) -> Option<&'static str> {
         | "svg" | "tga" | "dds" | "qoi" => Some("image"),
         "mp3" | "wav" | "flac" | "ogg" | "aac" | "aiff" | "aif" | "m4a" => Some("audio"),
         "pdf" => Some("document"),
+        "docx" | "odt" | "txt" => Some("textdoc"),
+        "xlsx" | "xls" | "ods" | "csv" => Some("spreadsheet"),
+        "pptx" | "odp" => Some("presentation"),
         _ => None,
     }
 }
@@ -211,6 +258,15 @@ pub fn resolve_format(ext: &str) -> Option<String> {
         "aac" | "m4a" => Some("aac".to_string()),
         "aiff" | "aif" => Some("aiff".to_string()),
         "pdf" => Some("pdf".to_string()),
+        "docx" => Some("docx".to_string()),
+        "odt" => Some("odt".to_string()),
+        "txt" => Some("txt".to_string()),
+        "xlsx" => Some("xlsx".to_string()),
+        "xls" => Some("xls".to_string()),
+        "ods" => Some("ods".to_string()),
+        "csv" => Some("csv".to_string()),
+        "pptx" => Some("pptx".to_string()),
+        "odp" => Some("odp".to_string()),
         _ => None,
     }
 }

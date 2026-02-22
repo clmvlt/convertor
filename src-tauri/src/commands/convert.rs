@@ -174,13 +174,43 @@ pub fn get_output_formats() -> Vec<OutputFormatInfo> {
         });
     }
 
-    for f in DocumentFormat::output_formats() {
+    for f in DocumentFormat::pdf_output_formats() {
         formats.push(OutputFormatInfo {
             format: f.extension().to_string(),
             extension: f.extension().to_string(),
             label: f.extension().to_uppercase(),
             supports_quality: f.supports_quality(),
             category: "document".to_string(),
+        });
+    }
+
+    for f in DocumentFormat::textdoc_output_formats() {
+        formats.push(OutputFormatInfo {
+            format: f.extension().to_string(),
+            extension: f.extension().to_string(),
+            label: f.extension().to_uppercase(),
+            supports_quality: f.supports_quality(),
+            category: "textdoc".to_string(),
+        });
+    }
+
+    for f in DocumentFormat::spreadsheet_output_formats() {
+        formats.push(OutputFormatInfo {
+            format: f.extension().to_string(),
+            extension: f.extension().to_string(),
+            label: f.extension().to_uppercase(),
+            supports_quality: f.supports_quality(),
+            category: "spreadsheet".to_string(),
+        });
+    }
+
+    for f in DocumentFormat::presentation_output_formats() {
+        formats.push(OutputFormatInfo {
+            format: f.extension().to_string(),
+            extension: f.extension().to_string(),
+            label: f.extension().to_uppercase(),
+            supports_quality: f.supports_quality(),
+            category: "presentation".to_string(),
         });
     }
 

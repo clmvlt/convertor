@@ -13,11 +13,11 @@ export type ImageFormat =
 
 export type AudioFormat = "wav" | "mp3" | "flac" | "ogg" | "aac" | "aiff";
 
-export type DocumentFormat = "pdf" | "png" | "jpg";
+export type DocumentFormat = "pdf" | "png" | "jpg" | "txt" | "docx" | "odt" | "xlsx" | "ods" | "csv" | "pptx" | "odp";
 
 export type OutputFormat = ImageFormat | AudioFormat | DocumentFormat;
 
-export type FileCategory = "image" | "audio" | "document";
+export type FileCategory = "image" | "audio" | "document" | "textdoc" | "spreadsheet" | "presentation";
 
 const IMAGE_EXTENSIONS: Record<string, ImageFormat> = {
   png: "png",
@@ -49,11 +49,32 @@ const DOCUMENT_EXTENSIONS: Record<string, DocumentFormat> = {
   pdf: "pdf",
 };
 
+const TEXTDOC_EXTENSIONS: Record<string, string> = {
+  docx: "docx",
+  odt: "odt",
+  txt: "txt",
+};
+
+const SPREADSHEET_EXTENSIONS: Record<string, string> = {
+  xlsx: "xlsx",
+  xls: "xlsx",
+  ods: "ods",
+  csv: "csv",
+};
+
+const PRESENTATION_EXTENSIONS: Record<string, string> = {
+  pptx: "pptx",
+  odp: "odp",
+};
+
 export function getFileCategory(extension: string): FileCategory | null {
   const ext = extension.toLowerCase().replace(/^\./, "");
   if (ext in IMAGE_EXTENSIONS) return "image";
   if (ext in AUDIO_EXTENSIONS) return "audio";
   if (ext in DOCUMENT_EXTENSIONS) return "document";
+  if (ext in TEXTDOC_EXTENSIONS) return "textdoc";
+  if (ext in SPREADSHEET_EXTENSIONS) return "spreadsheet";
+  if (ext in PRESENTATION_EXTENSIONS) return "presentation";
   return null;
 }
 
@@ -65,6 +86,12 @@ export function getOutputFormats(category: FileCategory): string[] {
       return ["wav", "flac"];
     case "document":
       return ["png", "jpg"];
+    case "textdoc":
+      return ["txt", "pdf", "docx", "odt"];
+    case "spreadsheet":
+      return ["csv", "xlsx", "ods"];
+    case "presentation":
+      return ["pdf", "pptx", "odp"];
   }
 }
 
@@ -73,6 +100,9 @@ export function getAllSupportedExtensions(): string[] {
     ...Object.keys(IMAGE_EXTENSIONS),
     ...Object.keys(AUDIO_EXTENSIONS),
     ...Object.keys(DOCUMENT_EXTENSIONS),
+    ...Object.keys(TEXTDOC_EXTENSIONS),
+    ...Object.keys(SPREADSHEET_EXTENSIONS),
+    ...Object.keys(PRESENTATION_EXTENSIONS),
   ];
 }
 
@@ -159,6 +189,14 @@ export const FORMAT_OPTIONS: Record<string, { label: string; color: string }> = 
   ogg: { label: "OGG", color: "bg-yellow-600" },
   aac: { label: "AAC", color: "bg-emerald-600" },
   aiff: { label: "AIFF", color: "bg-slate-600" },
+  txt: { label: "TXT", color: "bg-stone-600" },
+  docx: { label: "DOCX", color: "bg-blue-700" },
+  odt: { label: "ODT", color: "bg-sky-700" },
+  xlsx: { label: "XLSX", color: "bg-green-700" },
+  ods: { label: "ODS", color: "bg-emerald-700" },
+  csv: { label: "CSV", color: "bg-teal-700" },
+  pptx: { label: "PPTX", color: "bg-orange-700" },
+  odp: { label: "ODP", color: "bg-amber-700" },
 };
 
 export const FORMAT_DESCRIPTIONS: Record<string, string> = {
@@ -179,6 +217,14 @@ export const FORMAT_DESCRIPTIONS: Record<string, string> = {
   ogg: "Open source, compressed",
   aac: "Advanced audio codec",
   aiff: "Apple lossless audio",
+  txt: "Plain text, universal",
+  docx: "Word document",
+  odt: "OpenDocument text",
+  xlsx: "Excel spreadsheet",
+  ods: "OpenDocument spreadsheet",
+  csv: "Comma-separated values",
+  pptx: "PowerPoint presentation",
+  odp: "OpenDocument presentation",
 };
 
 export const LOSSY_FORMATS: string[] = ["jpg", "webp", "avif"];
@@ -187,10 +233,16 @@ export const CATEGORY_LABELS: Record<FileCategory, string> = {
   image: "Image",
   audio: "Audio",
   document: "Document",
+  textdoc: "Text Doc",
+  spreadsheet: "Spreadsheet",
+  presentation: "Presentation",
 };
 
 export const CATEGORY_COLORS: Record<FileCategory, string> = {
   image: "bg-blue-500/15 text-blue-400",
   audio: "bg-purple-500/15 text-purple-400",
   document: "bg-rose-500/15 text-rose-400",
+  textdoc: "bg-sky-500/15 text-sky-400",
+  spreadsheet: "bg-green-500/15 text-green-400",
+  presentation: "bg-orange-500/15 text-orange-400",
 };

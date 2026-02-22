@@ -1,4 +1,4 @@
-import { Check, X, Loader2, Circle, ExternalLink, Trash2, Image, Music, FileText } from "lucide-react";
+import { Check, X, Loader2, Circle, ExternalLink, Trash2, Image, Music, FileText, Sheet, Presentation } from "lucide-react";
 import type { ConversionFile, FileCategory } from "@/types/conversion";
 import { CATEGORY_COLORS, CATEGORY_LABELS } from "@/types/conversion";
 import { formatFileSize } from "@/lib/utils";
@@ -22,7 +22,12 @@ function CategoryIcon({ category }: { category: FileCategory }) {
     case "audio":
       return <Music className={className} />;
     case "document":
+    case "textdoc":
       return <FileText className={className} />;
+    case "spreadsheet":
+      return <Sheet className={className} />;
+    case "presentation":
+      return <Presentation className={className} />;
   }
 }
 

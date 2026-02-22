@@ -2,12 +2,18 @@ pub mod audio;
 pub mod document;
 pub mod error;
 pub mod image;
+pub mod presentation;
+pub mod spreadsheet;
+pub mod textdoc;
 pub mod traits;
 pub mod types;
 
 pub use self::audio::AudioConverter;
 pub use self::document::PdfConverter;
 pub use self::image::ImageConverter;
+pub use self::presentation::PresentationConverter;
+pub use self::spreadsheet::SpreadsheetConverter;
+pub use self::textdoc::TextDocConverter;
 pub use error::ConversionError;
 pub use traits::Converter;
 pub use types::*;

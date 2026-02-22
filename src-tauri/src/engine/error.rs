@@ -37,3 +37,21 @@ impl From<image::ImageError> for ConversionError {
         ConversionError::ConversionFailed(e.to_string())
     }
 }
+
+impl From<quick_xml::Error> for ConversionError {
+    fn from(e: quick_xml::Error) -> Self {
+        ConversionError::ReadError(format!("XML parse error: {}", e))
+    }
+}
+
+impl From<zip::result::ZipError> for ConversionError {
+    fn from(e: zip::result::ZipError) -> Self {
+        ConversionError::ReadError(format!("ZIP error: {}", e))
+    }
+}
+
+impl From<csv::Error> for ConversionError {
+    fn from(e: csv::Error) -> Self {
+        ConversionError::ConversionFailed(format!("CSV error: {}", e))
+    }
+}

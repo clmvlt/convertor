@@ -5,13 +5,17 @@ use tauri::{AppHandle, Emitter};
 
 use crate::engine::{
     AudioConverter, BatchConversionRequest, BatchConversionResult, Converter, ImageConverter,
-    JobResult, JobStatus, PdfConverter, ProgressEvent, file_category,
+    JobResult, JobStatus, PdfConverter, PresentationConverter, ProgressEvent, SpreadsheetConverter,
+    TextDocConverter, file_category,
 };
 
 fn dispatch_converter(input_ext: &str) -> Arc<dyn Converter> {
     match file_category(input_ext) {
         Some("audio") => Arc::new(AudioConverter::new()),
         Some("document") => Arc::new(PdfConverter::new()),
+        Some("textdoc") => Arc::new(TextDocConverter::new()),
+        Some("spreadsheet") => Arc::new(SpreadsheetConverter::new()),
+        Some("presentation") => Arc::new(PresentationConverter::new()),
         _ => Arc::new(ImageConverter::new()),
     }
 }

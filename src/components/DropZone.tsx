@@ -66,6 +66,18 @@ export default function DropZone({ onFilesAdded, onFolderAdded, hasFiles, disabl
           name: "Documents",
           extensions: ["pdf"],
         },
+        {
+          name: "Text Documents",
+          extensions: ["docx", "odt", "txt"],
+        },
+        {
+          name: "Spreadsheets",
+          extensions: ["xlsx", "xls", "ods", "csv"],
+        },
+        {
+          name: "Presentations",
+          extensions: ["pptx", "odp"],
+        },
       ],
     });
     if (result && result.length > 0) {
@@ -145,7 +157,9 @@ export default function DropZone({ onFilesAdded, onFolderAdded, hasFiles, disabl
       <div className="flex flex-wrap justify-center gap-x-3 gap-y-1 text-xs text-muted-foreground/60">
         <span>Images: PNG, JPG, WebP, GIF, BMP, TIFF, AVIF, ICO, SVG</span>
         <span>Audio: MP3, WAV, FLAC, OGG, AAC</span>
-        <span>Documents: PDF</span>
+        <span>Documents: PDF, DOCX, ODT, TXT</span>
+        <span>Spreadsheets: XLSX, ODS, CSV</span>
+        <span>Presentations: PPTX, ODP</span>
       </div>
     </div>
   );

@@ -6,9 +6,9 @@ and triggers the GitHub Actions release workflow.
 
 Usage:
     python release.py          # Release with current version from tauri.conf.json
-    python release.py --bump patch  # Bump patch version (0.0.1 -> 0.0.2) then release
-    python release.py --bump minor  # Bump minor version (0.0.1 -> 0.1.0) then release
-    python release.py --bump major  # Bump major version (0.0.1 -> 1.0.0) then release
+    python release.py --bump patch  # Bump patch version (0.0.2 -> 0.0.2) then release
+    python release.py --bump minor  # Bump minor version (0.0.2 -> 0.1.0) then release
+    python release.py --bump major  # Bump major version (0.0.2 -> 1.0.0) then release
 
 Requirements:
     - gh CLI installed and authenticated (https://cli.github.com/)

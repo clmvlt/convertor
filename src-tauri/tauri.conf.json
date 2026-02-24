@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Convertor",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "identifier": "com.convertor.app",
   "build": {
     "frontendDist": "../dist",
@@ -42,6 +42,11 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
+    "macOS": {
+      "minimumSystemVersion": "10.13",
+      "signingIdentity": "-",
+      "hardenedRuntime": false
+    },
     "category": "Utility",
     "shortDescription": "Fast cross-platform file converter",
     "longDescription": "Convertor is a fast, cross-platform file converter supporting images, audio, video, and documents."

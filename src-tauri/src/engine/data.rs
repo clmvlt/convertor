@@ -386,7 +386,7 @@ impl DataConverter {
             ));
         }
 
-        let mut doc = printpdf::PdfDocument::new("Convertor");
+        let mut doc = printpdf::PdfDocument::new("SuperConvert");
         doc.with_pages(pages);
 
         let mut warnings = Vec::new();

@@ -6,7 +6,6 @@ pub mod error;
 pub mod image;
 pub mod presentation;
 pub mod spreadsheet;
-pub mod textdoc;
 pub mod traits;
 pub mod types;
 #[cfg(feature = "ffmpeg")]
@@ -15,11 +14,10 @@ pub mod video;
 pub use self::archive::ArchiveConverter;
 pub use self::audio::AudioConverter;
 pub use self::data::DataConverter;
-pub use self::document::PdfConverter;
+pub use self::document::DocumentConverter;
 pub use self::image::ImageConverter;
 pub use self::presentation::PresentationConverter;
 pub use self::spreadsheet::SpreadsheetConverter;
-pub use self::textdoc::TextDocConverter;
 #[cfg(feature = "ffmpeg")]
 pub use self::video::VideoConverter;
 pub use error::ConversionError;

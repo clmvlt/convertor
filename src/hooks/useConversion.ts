@@ -19,7 +19,7 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { generateId } from "@/lib/utils";
 
 const CATEGORY_ORDER: FileCategory[] = [
-  "image", "audio", "video", "document", "textdoc",
+  "image", "audio", "video", "document",
   "spreadsheet", "presentation", "data", "archive",
 ];
 
@@ -28,6 +28,7 @@ interface ConversionState {
   outputFormats: Partial<Record<FileCategory, string>>;
   quality: number;
   outputFolder: string;
+  deleteOriginals: boolean;
   isConverting: boolean;
   conversionDone: boolean;
   globalProgress: number;
@@ -40,6 +41,7 @@ type Action =
   | { type: "SET_FORMAT"; category: FileCategory; format: string }
   | { type: "SET_QUALITY"; quality: number }
   | { type: "SET_OUTPUT_FOLDER"; folder: string }
+  | { type: "SET_DELETE_ORIGINALS"; value: boolean }
   | { type: "START_CONVERSION" }
   | { type: "START_SINGLE_CONVERSION"; id: string }
   | { type: "UPDATE_PROGRESS"; event: ProgressEvent }
@@ -90,7 +92,8 @@ function reducer(state: ConversionState, action: Action): ConversionState {
         }
       }
 
-      return { ...state, files, outputFormats };
+      const allDone = files.length > 0 && state.conversionDone;
+      return { ...state, files, outputFormats, conversionDone: allDone, globalProgress: allDone ? state.globalProgress : 0 };
     }
     case "CLEAR_FILES":
       return { ...state, files: [], globalProgress: 0, conversionDone: false, outputFormats: {} };
@@ -103,6 +106,8 @@ function reducer(state: ConversionState, action: Action): ConversionState {
       return { ...state, quality: action.quality };
     case "SET_OUTPUT_FOLDER":
       return { ...state, outputFolder: action.folder };
+    case "SET_DELETE_ORIGINALS":
+      return { ...state, deleteOriginals: action.value };
     case "START_CONVERSION":
       return {
         ...state,
@@ -188,6 +193,7 @@ const initialState: ConversionState = {
   outputFormats: {},
   quality: 85,
   outputFolder: "",
+  deleteOriginals: false,
   isConverting: false,
   conversionDone: false,
   globalProgress: 0,
@@ -257,6 +263,10 @@ export function useConversion() {
     dispatch({ type: "SET_OUTPUT_FOLDER", folder });
   }, []);
 
+  const setDeleteOriginals = useCallback((value: boolean) => {
+    dispatch({ type: "SET_DELETE_ORIGINALS", value });
+  }, []);
+
   const convertSingleFile = useCallback(async (fileId: string, format: string) => {
     const file = state.files.find((f) => f.id === fileId);
     if (!file) return;
@@ -268,13 +278,14 @@ export function useConversion() {
     });
 
     const inputPath = file.path;
-    const dir = state.outputFolder || inputPath.substring(0, inputPath.lastIndexOf("\\") !== -1 ? inputPath.lastIndexOf("\\") : inputPath.lastIndexOf("/"));
+    const sep = inputPath.includes("\\") ? "\\" : "/";
+    const dir = state.outputFolder || inputPath.substring(0, Math.max(inputPath.lastIndexOf("\\"), inputPath.lastIndexOf("/")));
     const baseName = file.name.substring(0, file.name.lastIndexOf("."));
     const ext = getFileExtension(format);
 
-    let outputPath = `${dir}\\${baseName}.${ext}`;
+    let outputPath = `${dir}${sep}${baseName}.${ext}`;
     if (outputPath === inputPath) {
-      outputPath = `${dir}\\${baseName}_converted.${ext}`;
+      outputPath = `${dir}${sep}${baseName}_converted.${ext}`;
     }
 
     const jobs = [{
@@ -288,7 +299,7 @@ export function useConversion() {
     }];
 
     try {
-      const result = await convertFiles({ jobs });
+      const result = await convertFiles({ jobs, delete_originals: state.deleteOriginals });
       if (result.results.length > 0) {
         dispatch({ type: "SINGLE_CONVERSION_COMPLETE", result: result.results[0] });
       }
@@ -297,7 +308,7 @@ export function useConversion() {
     } finally {
       unlisten();
     }
-  }, [state.files, state.quality, state.outputFolder]);
+  }, [state.files, state.quality, state.outputFolder, state.deleteOriginals]);
 
   const startConversion = useCallback(async () => {
     if (state.files.length === 0) return;
@@ -311,14 +322,15 @@ export function useConversion() {
 
     const jobs = state.files.map((file) => {
       const inputPath = file.path;
-      const dir = state.outputFolder || inputPath.substring(0, inputPath.lastIndexOf("\\") !== -1 ? inputPath.lastIndexOf("\\") : inputPath.lastIndexOf("/"));
+      const sep = inputPath.includes("\\") ? "\\" : "/";
+      const dir = state.outputFolder || inputPath.substring(0, Math.max(inputPath.lastIndexOf("\\"), inputPath.lastIndexOf("/")));
       const baseName = file.name.substring(0, file.name.lastIndexOf("."));
       const fileOutputFormat = state.outputFormats[file.category] ?? getOutputFormats(file.category)[0];
       const ext = getFileExtension(fileOutputFormat);
 
-      let outputPath = `${dir}\\${baseName}.${ext}`;
+      let outputPath = `${dir}${sep}${baseName}.${ext}`;
       if (outputPath === inputPath) {
-        outputPath = `${dir}\\${baseName}_converted.${ext}`;
+        outputPath = `${dir}${sep}${baseName}_converted.${ext}`;
       }
 
       return {
@@ -333,7 +345,7 @@ export function useConversion() {
     });
 
     try {
-      const result = await convertFiles({ jobs });
+      const result = await convertFiles({ jobs, delete_originals: state.deleteOriginals });
       dispatch({ type: "CONVERSION_COMPLETE", results: result.results });
     } catch {
       dispatch({ type: "CONVERSION_COMPLETE", results: [] });
@@ -343,10 +355,17 @@ export function useConversion() {
         unlistenRef.current = null;
       }
     }
-  }, [state.files, state.outputFormats, state.quality, state.outputFolder]);
+  }, [state.files, state.outputFormats, state.quality, state.outputFolder, state.deleteOriginals]);
 
   const openFile = useCallback(async (path: string) => {
     await openPath(path);
+  }, []);
+
+  const openFileFolder = useCallback(async (path: string) => {
+    const lastSep = Math.max(path.lastIndexOf("\\"), path.lastIndexOf("/"));
+    if (lastSep > 0) {
+      await openPath(path.substring(0, lastSep));
+    }
   }, []);
 
   const openOutputFolder = useCallback(async () => {
@@ -370,6 +389,7 @@ export function useConversion() {
     outputFormats: state.outputFormats,
     quality: state.quality,
     outputFolder: state.outputFolder,
+    deleteOriginals: state.deleteOriginals,
     isConverting: state.isConverting,
     conversionDone: state.conversionDone,
     globalProgress: state.globalProgress,
@@ -384,8 +404,10 @@ export function useConversion() {
     setFormat,
     setQuality,
     setOutputFolder,
+    setDeleteOriginals,
     startConversion,
     openFile,
+    openFileFolder,
     openOutputFolder,
     resetConversion,
   };

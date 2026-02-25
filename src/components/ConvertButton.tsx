@@ -22,29 +22,32 @@ export default function ConvertButton({
 }: ConvertButtonProps) {
   if (conversionDone) {
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1.5">
         <Button
           onClick={onOpenFolder}
-          className="w-full bg-green-600 hover:bg-green-500 text-white"
-          size="lg"
+          className="w-full bg-green-600/90 hover:bg-green-600 text-white"
+          size="default"
         >
-          <FolderOpen className="size-4" />
+          <FolderOpen className="size-3.5" />
           Open output folder
         </Button>
-        <div className="flex gap-2">
+        <div className="flex gap-1.5">
           <Button
             variant="secondary"
+            size="sm"
             onClick={onReset}
             className="flex-1"
           >
-            <RotateCcw className="size-4" />
+            <RotateCcw className="size-3" />
             Convert again
           </Button>
           <Button
             variant="ghost"
+            size="sm"
             onClick={onClear}
+            className="text-muted-foreground/50 hover:text-red-400"
           >
-            <Trash2 className="size-4" />
+            <Trash2 className="size-3" />
             Clear
           </Button>
         </div>
@@ -58,11 +61,11 @@ export default function ConvertButton({
         onClick={onConvert}
         disabled={fileCount === 0 || isConverting}
         className="flex-1"
-        size="lg"
+        size="default"
       >
         {isConverting ? (
           <>
-            <Loader2 className="size-4 animate-spin" />
+            <Loader2 className="size-3.5 animate-spin" />
             Converting...
           </>
         ) : (
@@ -71,11 +74,12 @@ export default function ConvertButton({
       </Button>
       {fileCount > 0 && !isConverting && (
         <Button
-          variant="destructive"
+          variant="ghost"
+          size="icon"
           onClick={onClear}
-          size="lg"
+          className="text-muted-foreground/40 hover:text-red-400"
         >
-          <Trash2 className="size-4" />
+          <Trash2 className="size-3.5" />
         </Button>
       )}
     </div>

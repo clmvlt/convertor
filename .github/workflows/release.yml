@@ -50,8 +50,8 @@ jobs:
           APPLE_SIGNING_IDENTITY: "-"
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: "Convertor ${{ github.ref_name }}"
-          releaseBody: "Telecharger Convertor pour votre plateforme."
+          releaseName: "SuperConvert ${{ github.ref_name }}"
+          releaseBody: "Telecharger SuperConvert pour votre plateforme."
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}

@@ -52,7 +52,7 @@ def main():
     current = get_current_version()
 
     print()
-    print("  Convertor - Push to main")
+    print("  SuperConvert - Push to main")
     print("  ========================")
     print()
 

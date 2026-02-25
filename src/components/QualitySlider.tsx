@@ -12,12 +12,12 @@ export default function QualitySlider({
   disabled,
 }: QualitySliderProps) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-2.5 pt-1 border-t border-border/30">
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-card-foreground">
+        <span className="text-xs font-medium text-muted-foreground/70">
           Quality
-        </label>
-        <span className="text-sm text-muted-foreground tabular-nums">
+        </span>
+        <span className="text-xs font-semibold text-foreground/80 tabular-nums">
           {quality}%
         </span>
       </div>
@@ -29,10 +29,6 @@ export default function QualitySlider({
         onValueChange={([val]) => onChange(val)}
         disabled={disabled}
       />
-      <div className="flex justify-between text-xs text-muted-foreground/60">
-        <span>Low</span>
-        <span>High</span>
-      </div>
     </div>
   );
 }

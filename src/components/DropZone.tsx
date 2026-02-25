@@ -77,19 +77,22 @@ export default function DropZone({ onFilesAdded, onFolderAdded, hasFiles, disabl
       <div className="flex items-center gap-2">
         <Button
           variant="outline"
+          size="sm"
           onClick={handleBrowse}
           disabled={disabled}
-          className="flex-1"
+          className="flex-1 border-dashed border-border/60 hover:border-border text-muted-foreground hover:text-foreground"
         >
-          <Plus className="size-4" />
+          <Plus className="size-3.5" />
           Add files
         </Button>
         <Button
           variant="outline"
+          size="sm"
           onClick={handleBrowseFolder}
           disabled={disabled}
+          className="border-dashed border-border/60 hover:border-border text-muted-foreground hover:text-foreground"
         >
-          <FolderOpen className="size-4" />
+          <FolderOpen className="size-3.5" />
           Add folder
         </Button>
       </div>
@@ -100,22 +103,22 @@ export default function DropZone({ onFilesAdded, onFolderAdded, hasFiles, disabl
     <div
       onClick={handleBrowse}
       className={`
-        flex flex-col items-center justify-center gap-4 p-12 rounded-xl border-2 border-dashed transition-all duration-200 cursor-pointer
+        flex flex-col items-center justify-center gap-5 py-16 rounded-2xl border-2 border-dashed transition-all duration-300 cursor-pointer
         ${isDragging
-          ? "border-primary bg-primary/5"
-          : "border-border hover:border-muted-foreground/50 bg-card/50 hover:bg-card"
+          ? "border-primary/60 bg-primary/5 scale-[1.01]"
+          : "border-border/40 hover:border-muted-foreground/30 bg-card/30 hover:bg-card/50"
         }
         ${disabled ? "opacity-50 cursor-not-allowed" : ""}
       `}
     >
-      <div className="text-muted-foreground">
-        <Upload className="size-12 stroke-[1.5]" />
+      <div className={`p-4 rounded-2xl transition-colors duration-300 ${isDragging ? "bg-primary/10" : "bg-muted/50"}`}>
+        <Upload className={`size-8 stroke-[1.5] transition-colors duration-300 ${isDragging ? "text-primary" : "text-muted-foreground/50"}`} />
       </div>
-      <div className="text-center">
-        <p className="text-lg font-medium text-foreground">
+      <div className="text-center space-y-1.5">
+        <p className="text-sm font-medium text-foreground/80">
           {isDragging ? "Drop files here" : "Drag & drop files here"}
         </p>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-xs text-muted-foreground/50">
           or click to browse
         </p>
       </div>
@@ -126,9 +129,9 @@ export default function DropZone({ onFilesAdded, onFolderAdded, hasFiles, disabl
           e.stopPropagation();
           handleBrowseFolder();
         }}
-        className="text-primary"
+        className="text-xs text-muted-foreground/50 hover:text-muted-foreground"
       >
-        <FolderOpen className="size-4" />
+        <FolderOpen className="size-3.5" />
         or select a folder
       </Button>
     </div>

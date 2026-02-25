@@ -1,4 +1,3 @@
-import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 
 interface ProgressBarProps {
@@ -14,19 +13,21 @@ export default function ProgressBar({ progress, isConverting }: ProgressBarProps
 
   return (
     <div className="space-y-1.5">
-      <div className="flex justify-between text-sm">
-        <span className="text-muted-foreground">
-          {isDone ? "Conversion complete" : "Converting..."}
+      <div className="flex justify-between text-[11px]">
+        <span className="text-muted-foreground/60">
+          {isDone ? "Complete" : "Converting..."}
         </span>
-        <span className="text-muted-foreground tabular-nums">{pct}%</span>
+        <span className="text-muted-foreground/60 tabular-nums font-medium">{pct}%</span>
       </div>
-      <Progress
-        value={pct}
-        className={cn(
-          "h-2",
-          isDone && "[&>[data-slot=progress-indicator]]:bg-green-500"
-        )}
-      />
+      <div className="h-1.5 bg-muted/30 rounded-full overflow-hidden">
+        <div
+          className={cn(
+            "h-full rounded-full transition-all duration-500 ease-out",
+            isDone ? "bg-green-500/70" : "bg-primary/60"
+          )}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { FORMAT_OPTIONS, CATEGORY_LABELS, CATEGORY_COLORS } from "@/types/conversion";
 import type { FileCategory } from "@/types/conversion";
-import { Button } from "@/components/ui/button";
 
 interface FormatPickerProps {
   category: FileCategory;
@@ -15,32 +14,33 @@ export default function FormatPicker({ category, showLabel, formats, selected, o
   return (
     <div>
       {showLabel && (
-        <div className="flex items-center gap-2 mb-2">
-          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLORS[category]}`}>
+        <div className="mb-2">
+          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wide ${CATEGORY_COLORS[category]}`}>
             {CATEGORY_LABELS[category]}
           </span>
         </div>
       )}
-      <div className="grid grid-cols-4 gap-1.5">
+      <div className="flex flex-wrap gap-1">
         {formats.map((fmt) => {
           const info = FORMAT_OPTIONS[fmt];
           const isSelected = selected === fmt;
           if (!info) return null;
           return (
-            <Button
+            <button
               key={fmt}
-              variant={isSelected ? "default" : "secondary"}
-              size="sm"
               onClick={() => onChange(fmt)}
               disabled={disabled}
-              className={
-                isSelected
-                  ? `${info.color} text-white hover:opacity-90 shadow-md`
-                  : ""
-              }
+              className={`
+                px-2.5 py-1 rounded-md text-[11px] font-semibold uppercase transition-all duration-150 cursor-pointer
+                disabled:opacity-40 disabled:cursor-not-allowed
+                ${isSelected
+                  ? `${info.color} text-white shadow-sm`
+                  : "bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
+                }
+              `}
             >
               {info.label}
-            </Button>
+            </button>
           );
         })}
       </div>

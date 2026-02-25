@@ -117,6 +117,7 @@ pub enum AudioFormat {
 }
 
 impl AudioFormat {
+    #[allow(dead_code)]
     pub fn from_extension(ext: &str) -> Option<Self> {
         match ext.to_lowercase().as_str() {
             "wav" => Some(Self::Wav),
@@ -190,6 +191,7 @@ pub enum VideoFormat {
 }
 
 impl VideoFormat {
+    #[allow(dead_code)]
     pub fn from_extension(ext: &str) -> Option<Self> {
         match ext.to_lowercase().as_str() {
             "mp4" => Some(Self::Mp4),
@@ -260,6 +262,7 @@ pub enum DataFormat {
 }
 
 impl DataFormat {
+    #[allow(dead_code)]
     pub fn from_extension(ext: &str) -> Option<Self> {
         match ext.to_lowercase().as_str() {
             "json" => Some(Self::Json),
@@ -321,6 +324,7 @@ pub enum ArchiveFormat {
 }
 
 impl ArchiveFormat {
+    #[allow(dead_code)]
     pub fn from_extension(ext: &str) -> Option<Self> {
         match ext.to_lowercase().as_str() {
             "zip" => Some(Self::Zip),
@@ -358,6 +362,7 @@ impl ArchiveFormat {
         }
     }
 
+    #[allow(dead_code)]
     pub fn from_token(token: &str) -> Option<Self> {
         match token.to_lowercase().as_str() {
             "zip" => Some(Self::Zip),
@@ -437,12 +442,8 @@ impl DocumentFormat {
         }
     }
 
-    pub fn pdf_output_formats() -> Vec<Self> {
-        vec![Self::Png, Self::Jpg]
-    }
-
-    pub fn textdoc_output_formats() -> Vec<Self> {
-        vec![Self::Txt, Self::Pdf, Self::Docx, Self::Odt]
+    pub fn document_output_formats() -> Vec<Self> {
+        vec![Self::Pdf, Self::Docx, Self::Odt, Self::Txt, Self::Png, Self::Jpg]
     }
 
     pub fn spreadsheet_output_formats() -> Vec<Self> {
@@ -571,8 +572,7 @@ pub fn file_category(ext: &str) -> Option<&'static str> {
         "mp4" | "avi" | "mkv" | "mov" | "webm" | "flv" | "wmv" | "mpeg" | "mpg" | "ts"
         | "3gp" | "m4v" | "vob" => Some("video"),
 
-        "pdf" => Some("document"),
-        "docx" | "odt" | "txt" | "rtf" | "epub" => Some("textdoc"),
+        "pdf" | "docx" | "odt" | "txt" | "rtf" | "epub" => Some("document"),
         "xlsx" | "xls" | "ods" | "csv" => Some("spreadsheet"),
         "pptx" | "odp" => Some("presentation"),
 
@@ -666,6 +666,8 @@ pub struct ConversionJob {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BatchConversionRequest {
     pub jobs: Vec<ConversionJob>,
+    #[serde(default)]
+    pub delete_originals: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

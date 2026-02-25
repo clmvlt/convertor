@@ -6,7 +6,7 @@ import os
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-REPO = "clmvlt/convertor"
+REPO = "clmvlt/superconvert"
 
 
 def get_current_version():
@@ -54,7 +54,7 @@ def main():
     current = get_current_version()
 
     print()
-    print("  Convertor - Release")
+    print("  SuperConvert - Release")
     print("  ===================")
     print()
 

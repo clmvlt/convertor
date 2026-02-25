@@ -391,7 +391,7 @@ impl ImageConverter {
                     tag: Vec::new(),
                 };
 
-                let mut doc = printpdf::PdfDocument::new("Convertor");
+                let mut doc = printpdf::PdfDocument::new("SuperConvert");
                 let image_id = doc.add_image(&raw_image);
 
                 let page = printpdf::PdfPage::new(

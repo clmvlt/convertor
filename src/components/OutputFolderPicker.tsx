@@ -1,6 +1,5 @@
 import { open } from "@tauri-apps/plugin-dialog";
 import { FolderOpen } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 interface OutputFolderPickerProps {
   folder: string;
@@ -24,18 +23,17 @@ export default function OutputFolderPicker({
   };
 
   return (
-    <Button
-      variant="outline"
+    <button
       onClick={handlePick}
       disabled={disabled}
-      className="w-full justify-start text-left h-auto py-2"
+      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg border border-border/40 bg-background/50 hover:bg-background/80 hover:border-border/60 transition-all duration-150 text-left cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
     >
-      <FolderOpen className="size-4 shrink-0" />
+      <FolderOpen className="size-3.5 shrink-0 text-muted-foreground/50" />
       {folder ? (
-        <span className="truncate text-foreground">{folder}</span>
+        <span className="truncate text-xs text-foreground/80">{folder}</span>
       ) : (
-        <span className="text-muted-foreground">Same as source (default)</span>
+        <span className="text-xs text-muted-foreground/40">Same as source (default)</span>
       )}
-    </Button>
+    </button>
   );
 }

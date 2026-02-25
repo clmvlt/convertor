@@ -30,7 +30,7 @@ export type DocumentFormat = "pdf" | "png" | "jpg" | "txt" | "docx" | "odt" | "x
 
 export type OutputFormat = ImageFormat | AudioFormat | VideoFormat | DataFormat | ArchiveFormat | DocumentFormat;
 
-export type FileCategory = "image" | "audio" | "video" | "document" | "textdoc" | "spreadsheet" | "presentation" | "data" | "archive";
+export type FileCategory = "image" | "audio" | "video" | "document" | "spreadsheet" | "presentation" | "data" | "archive";
 
 const IMAGE_EXTENSIONS: Record<string, string> = {
   png: "png",
@@ -100,9 +100,6 @@ const VIDEO_EXTENSIONS: Record<string, string> = {
 
 const DOCUMENT_EXTENSIONS: Record<string, string> = {
   pdf: "pdf",
-};
-
-const TEXTDOC_EXTENSIONS: Record<string, string> = {
   docx: "docx",
   odt: "odt",
   txt: "txt",
@@ -151,7 +148,6 @@ export function getFileCategory(extension: string): FileCategory | null {
   if (ext in AUDIO_EXTENSIONS) return "audio";
   if (ext in VIDEO_EXTENSIONS) return "video";
   if (ext in DOCUMENT_EXTENSIONS) return "document";
-  if (ext in TEXTDOC_EXTENSIONS) return "textdoc";
   if (ext in SPREADSHEET_EXTENSIONS) return "spreadsheet";
   if (ext in PRESENTATION_EXTENSIONS) return "presentation";
   if (ext in DATA_EXTENSIONS) return "data";
@@ -168,9 +164,7 @@ export function getOutputFormats(category: FileCategory): string[] {
     case "video":
       return ["mp4", "avi", "mkv", "mov", "webm", "flv", "wmv", "mpeg", "ts", "3gp", "m4v"];
     case "document":
-      return ["png", "jpg"];
-    case "textdoc":
-      return ["txt", "pdf", "docx", "odt"];
+      return ["pdf", "docx", "odt", "txt", "png", "jpg"];
     case "spreadsheet":
       return ["csv", "xlsx", "ods"];
     case "presentation":
@@ -199,7 +193,6 @@ export function getAllSupportedExtensions(): string[] {
     ...Object.keys(AUDIO_EXTENSIONS),
     ...Object.keys(VIDEO_EXTENSIONS),
     ...Object.keys(DOCUMENT_EXTENSIONS),
-    ...Object.keys(TEXTDOC_EXTENSIONS),
     ...Object.keys(SPREADSHEET_EXTENSIONS),
     ...Object.keys(PRESENTATION_EXTENSIONS),
     ...Object.keys(DATA_EXTENSIONS),
@@ -221,6 +214,7 @@ export interface ConversionJob {
 
 export interface BatchConversionRequest {
   jobs: ConversionJob[];
+  delete_originals: boolean;
 }
 
 export interface ProgressEvent {
@@ -425,7 +419,6 @@ export const CATEGORY_LABELS: Record<FileCategory, string> = {
   audio: "Audio",
   video: "Video",
   document: "Document",
-  textdoc: "Text Doc",
   spreadsheet: "Spreadsheet",
   presentation: "Presentation",
   data: "Data",
@@ -437,7 +430,6 @@ export const CATEGORY_COLORS: Record<FileCategory, string> = {
   audio: "bg-purple-500/15 text-purple-400",
   video: "bg-red-500/15 text-red-400",
   document: "bg-rose-500/15 text-rose-400",
-  textdoc: "bg-sky-500/15 text-sky-400",
   spreadsheet: "bg-green-500/15 text-green-400",
   presentation: "bg-orange-500/15 text-orange-400",
   data: "bg-yellow-500/15 text-yellow-400",
